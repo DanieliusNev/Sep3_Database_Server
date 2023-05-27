@@ -55,8 +55,8 @@ public class Exercise {
     }
     @Override
     public String toString() {
-        return "{" +
-                "\"title\":\"" + title + "\"" +
+        return "{" +"\"id\":" + id +
+                ",\"title\":\"" + title + "\"" +
                 ",\"date\":\"" + dateNumber +
                 "\",\"userId\":" + userId +
                 "}";

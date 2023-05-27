@@ -28,7 +28,18 @@ public class ExerciseHandler {
             case "PostExercise":
                 Exercise exercisePost = extractExerciseFromJson(requestDataNode);
                 return registerExercise(exercisePost);
-            default:
+            case "getExercisesByUserIdAndDateRange":
+                int userId2 = requestDataNode.get("userId").asInt();
+                Date startTime = Date.valueOf(requestDataNode.get("startDate").asText());
+                Date endDate = Date.valueOf(requestDataNode.get("endDate").asText());
+                return getExercisesByUserIdAndDateRange(userId2,startTime, endDate);
+            case "updateExercise":
+                Exercise exerciseUpdate = extractExerciseFromJson(requestDataNode);
+                return updateExercise(exerciseUpdate);
+            case "deleteExercise":
+                long exerciseId = requestDataNode.get("exerciseId").asLong();
+                return deleteExercise(exerciseId);
+                default:
                 return "Invalid action";
         }
     }
@@ -56,6 +67,51 @@ public class ExerciseHandler {
         return exercises.toString();
     }
 
+    public String getExercisesByUserIdAndDateRange(int userId, Date startDate, Date endDate) {
+        List<Exercise> exercises = new ArrayList<>();
+
+        String query = "SELECT * FROM exercises WHERE id_user = ? AND date_number BETWEEN ? AND ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.setDate(2, startDate);
+            statement.setDate(3, endDate);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String title = resultSet.getString("title");
+                Date dateNumber = resultSet.getDate("date_number");
+
+                Exercise exercise = new Exercise(id, title, dateNumber, userId);
+                exercises.add(exercise);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving exercises", e);
+        }
+
+        return exercises.toString();
+    }
+    public String updateExercise(Exercise exercise) {
+        String query = "UPDATE exercises SET title = ?, date_number = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, exercise.getTitle());
+            statement.setDate(2, exercise.getDateNumber());
+            statement.setLong(3, exercise.getId());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                return "Exercise updated successfully";
+            } else {
+                return "Failed to update exercise";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to update exercise";
+        }
+    }
+
+
+
     public String registerExercise(Exercise exercise) {
         String query = "INSERT INTO exercises (title, date_number, id_user) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -72,6 +128,22 @@ public class ExerciseHandler {
         } catch (SQLException e) {
             e.printStackTrace();
             return "Failed to register exercise";
+        }
+    }
+    public String deleteExercise(long exerciseId) {
+        String query = "DELETE FROM exercises WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, exerciseId);
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                return "Exercise deleted successfully";
+            } else {
+                return "Failed to delete exercise";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to delete exercise";
         }
     }
 
