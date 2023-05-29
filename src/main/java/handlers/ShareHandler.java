@@ -24,6 +24,7 @@ public class ShareHandler {
                 String comment = requestDataNode.get("comment").asText();
                 return shareExercises(userId, exerciseIds, comment);
             case "getSharedPostsByUser":
+                System.out.println("reached case");
                 return getSharedPostsByUser();
             default:
                 return "Invalid action";
@@ -66,7 +67,7 @@ public class ShareHandler {
                 "JOIN shared_post_exercises sed ON sp.id = sed.shared_post_id " +
                 "JOIN exercises e ON sed.exercise_id = e.id " +
                 "ORDER BY sp.shared_date DESC";
-
+        System.out.println(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -89,7 +90,7 @@ public class ShareHandler {
                 SharedExercise sharedExercise = new SharedExercise(exerciseTitle);
                 sharedPost.addExerciseTitle(sharedExercise);
             }
-
+            System.out.println("trying to return posts");
             return sharedPostsToString(sharedPosts);
         } catch (SQLException e) {
             throw new RuntimeException("Error retrieving shared posts", e);
