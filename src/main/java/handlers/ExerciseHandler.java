@@ -81,8 +81,12 @@ public class ExerciseHandler {
                 long id = resultSet.getLong("id");
                 String title = resultSet.getString("title");
                 Date dateNumber = resultSet.getDate("date_number");
+                String weights = resultSet.getString("weights");
+                String amount = resultSet.getString("amount");
+                int categoryId = resultSet.getInt("category_id");
 
-                Exercise exercise = new Exercise(id, title, dateNumber, userId);
+                /*Exercise exercise = new Exercise(id, title, dateNumber, userId);*/
+                Exercise exercise = new Exercise(id, title, dateNumber, weights, amount, categoryId, userId);
                 exercises.add(exercise);
             }
         } catch (SQLException e) {
@@ -109,10 +113,31 @@ public class ExerciseHandler {
             return "Failed to update exercise";
         }
     }
-
-
-
     public String registerExercise(Exercise exercise) {
+        String query = "INSERT INTO exercises (title, date_number, weights, amount, category_id, id_user) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, exercise.getTitle());
+            statement.setDate(2, exercise.getDateNumber());
+            statement.setString(3, exercise.getWeights());
+            statement.setString(4, exercise.getAmount());
+            statement.setInt(5, exercise.getCategoryId());
+            statement.setInt(6, exercise.getUserId());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                return "Exercise registered successfully";
+            } else {
+                return "Failed to register exercise";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to register exercise";
+        }
+    }
+
+
+
+    /*public String registerExercise(Exercise exercise) {
         String query = "INSERT INTO exercises (title, date_number, id_user) VALUES (?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, exercise.getTitle());
@@ -129,7 +154,7 @@ public class ExerciseHandler {
             e.printStackTrace();
             return "Failed to register exercise";
         }
-    }
+    }*/
     public String deleteExercise(long exerciseId) {
         String query = "DELETE FROM exercises WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {

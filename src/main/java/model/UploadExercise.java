@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Date;
 
-public class Exercise {
+public class UploadExercise {
     private long id;
     @JsonProperty("title")
     private String title;
@@ -19,7 +19,7 @@ public class Exercise {
     @JsonProperty("categoryId")
     private int categoryId;
 
-    public Exercise(long id, String title, Date dateNumber, String weights, String amount, int categoryId, int userId) {
+    public UploadExercise(long id, String title, Date dateNumber, String weights, String amount, int categoryId, int userId) {
         this.id = id;
         this.title = title;
         this.dateNumber = dateNumber;
@@ -29,14 +29,8 @@ public class Exercise {
         this.userId = userId;
     }
 
-    public Exercise(long id, String title, Date dateNumber, int userId) {
-        this.id = id;
-        this.title = title;
-        this.dateNumber = dateNumber;
-        this.userId = userId;
-    }
 
-    public Exercise() {
+    public UploadExercise() {
     }
 
     public long getId() {
@@ -94,23 +88,14 @@ public class Exercise {
         this.categoryId = categoryId;
     }
     @Override
-    /*public String toString() {
-        return "{" +"\"id\":" + id +
-                ",\"title\":\"" + title + "\"" +
-                ",\"date\":\"" + dateNumber +
-                "\",\"userId\":" + userId +
-                "}";
-    }*/
-
     public String toString() {
         return "{" + "\"id\":" + id +
                 ",\"title\":\"" + title + "\"" +
                 ",\"date\":\"" + dateNumber +
                 "\",\"weights\":\"" + weights + "\"" +
-                ",\"amount\":\"" + amount + "\"" +
+                "\",\"amount\":\"" + amount + "\"" +
                 ",\"categoryId\":" + categoryId +
                 ",\"userId\":" + userId +
                 "}";
     }
 }
-
