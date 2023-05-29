@@ -94,13 +94,6 @@ public class Exercise {
         this.categoryId = categoryId;
     }
     @Override
-    /*public String toString() {
-        return "{" +"\"id\":" + id +
-                ",\"title\":\"" + title + "\"" +
-                ",\"date\":\"" + dateNumber +
-                "\",\"userId\":" + userId +
-                "}";
-    }*/
 
     public String toString() {
         return "{" + "\"id\":" + id +
