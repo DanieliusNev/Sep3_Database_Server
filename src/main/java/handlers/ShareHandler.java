@@ -35,33 +35,6 @@ public class ShareHandler {
         }
     }
 
-    /*public String shareExercises(int userId, List<Integer> exerciseIds, String comment) {
-        String sharedPostsQuery = "INSERT INTO shared_posts (shared_by, comment) VALUES (?, ?)";
-        String sharedPostExercisesQuery = "INSERT INTO shared_post_exercises (shared_post_id, exercise_id) VALUES (?, ?)";
-
-        try (PreparedStatement sharedPostsStatement = connection.prepareStatement(sharedPostsQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-             PreparedStatement sharedPostExercisesStatement = connection.prepareStatement(sharedPostExercisesQuery)) {
-
-            sharedPostsStatement.setInt(1, userId);
-            sharedPostsStatement.setString(2, comment);
-            sharedPostsStatement.executeUpdate();
-
-            ResultSet generatedKeys = sharedPostsStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int sharedPostId = generatedKeys.getInt(1);
-
-                for (int exerciseId : exerciseIds) {
-                    sharedPostExercisesStatement.setInt(1, sharedPostId);
-                    sharedPostExercisesStatement.setInt(2, exerciseId);
-                    sharedPostExercisesStatement.executeUpdate();
-                }
-            }
-
-            return "Exercises shared successfully";
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to share exercises", e);
-        }
-    }*/
     public String shareExercises(int userId, List<Integer> exerciseIds, String comment) {
         String sharedPostsQuery = "INSERT INTO shared_posts (shared_by, comment) VALUES (?, ?)";
         String sharedPostExercisesQuery = "INSERT INTO shared_post_exercises (shared_post_id, exercise_id) VALUES (?, ?)";
@@ -95,17 +68,8 @@ public class ShareHandler {
         }
     }
 
-
-
-
     public String getSharedPosts() {
         List<SharedPost> sharedPosts = new ArrayList<>();
-        /*String query = "SELECT sp.id AS shared_post_id, sp.shared_date, sp.comment, u.username, e.title " +
-                "FROM shared_posts sp " +
-                "JOIN user_profile u ON sp.shared_by = u.id " +
-                "JOIN shared_post_exercises sed ON sp.id = sed.shared_post_id " +
-                "JOIN exercises e ON sed.exercise_id = e.id " +
-                "ORDER BY sp.shared_date DESC";*/
         String query = "SELECT sp.id AS shared_post_id, sp.shared_date, sp.comment, u.username, e.title " +
                 "FROM shared_posts sp " +
                 "JOIN user_profile u ON sp.shared_by = u.id " +
