@@ -2,6 +2,7 @@ package server;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import handlers.ExerciseHandler;
+import handlers.ShareHandler;
 import handlers.UserHandler;
 import model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,6 +76,9 @@ public class DatabaseServer {
                 } else if ("exercise".equals(handlerType)) {
                     ExerciseHandler exerciseHandler = new ExerciseHandler(connection);
                     response = exerciseHandler.handleRequest(action,dataNode);
+                }else if ("share".equals(handlerType)) {
+                    ShareHandler shareHandler = new ShareHandler(connection);
+                    response = shareHandler.handleRequest(action,dataNode);
                 }
                 else {
                     response = "Invalid handler type";
