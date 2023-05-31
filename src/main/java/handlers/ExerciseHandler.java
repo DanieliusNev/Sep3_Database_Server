@@ -85,7 +85,6 @@ public class ExerciseHandler {
                 String amount = resultSet.getString("amount");
                 int categoryId = resultSet.getInt("category_id");
 
-                /*Exercise exercise = new Exercise(id, title, dateNumber, userId);*/
                 Exercise exercise = new Exercise(id, title, dateNumber, weights, amount, categoryId, userId);
                 exercises.add(exercise);
             }

@@ -91,7 +91,6 @@ public class DatabaseServer {
                 response = "Failed to connect to the database";
             }finally {
                 connectionPool.releaseConnection(connection); // Releasing the connection back to the pool,
-                //bc I am using socket connection in every single http method
             }
         } else {
             response = "Invalid request format";
